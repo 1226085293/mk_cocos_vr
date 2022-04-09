@@ -1,21 +1,6 @@
 import { _decorator, Component, Node, RenderStage } from "cc";
 import * as cc from "cc";
-const { ccclass, property } = _decorator;
-
-@ccclass("custom_render_stage")
-export class custom_render_stage extends RenderStage {
-	/* use `property` decorator if your want the member to be serializable */
-	// @property
-	// serializableDummy = 0;
-
-	resize() {}
-
-	render() {}
-
-	rebuild() {}
-
-	destroy() {}
-}
+import { EDITOR, JSB } from "cc/env";
 
 const colors: cc.Color[] = [new cc.Color(0, 0, 0, 1)];
 cc.PostProcessStage.prototype.render = function (camera: any) {

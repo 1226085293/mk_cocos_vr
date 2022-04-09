@@ -15,7 +15,7 @@
         "_value": true
       },
       "3d": {
-        "_value": false
+        "_value": true
       },
       "2d": {
         "_value": true
@@ -56,7 +56,7 @@
         "_value": true
       },
       "primitive": {
-        "_value": false
+        "_value": true
       },
       "profiler": {
         "_value": true
@@ -87,10 +87,14 @@
       },
       "dragon-bones": {
         "_value": true
+      },
+      "marionette": {
+        "_value": true
       }
     },
     "includeModules": [
       "2d",
+      "3d",
       "audio",
       "base",
       "dragon-bones",
@@ -100,6 +104,7 @@
       "marionette",
       "particle-2d",
       "physics-2d-box2d",
+      "primitive",
       "profiler",
       "spine",
       "tiled-map",
@@ -111,6 +116,7 @@
     "noDeprecatedFeatures": {
       "value": false,
       "version": ""
-    }
+    },
+    "flags": {}
   }
 }

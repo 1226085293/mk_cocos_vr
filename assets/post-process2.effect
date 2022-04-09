@@ -58,6 +58,23 @@ void texcoords(vec2 fragCoord, vec2 resolution,
         v_rgbM = vec2(fragCoord * inverseVP);
 }
 
+vec2 crt(vec2 coord, float bend)
+{
+	// put in symmetrical coords
+	coord = (coord - 0.5) * 2.0;
+
+	coord *= 1.1;	
+
+	// deform coords
+	coord.x *= 1.0 + pow((abs(coord.y) / bend), 2.0);
+	coord.y *= 1.0 + pow((abs(coord.x) / bend), 2.0);
+
+	// transform back to 0.0 - 1.0 space
+	coord  = (coord / 2.0) + 0.5;
+
+	return coord;
+}
+
 void main () {
     mediump vec2 v_rgbNW;
 	  mediump vec2 v_rgbNE;
@@ -65,15 +82,26 @@ void main () {
 	  mediump vec2 v_rgbSE;
   	mediump vec2 v_rgbM;
 
+    vec2 v_uv2 = vec2(v_uv.x, v_uv.y + 0.25);
+    // if (v_uv.x < 0.5) {
+    //   v_uv2.x += 0.02 * sin(cc_time.x);
+    // } else {
+    //   v_uv2.x -= 0.02 * sin(cc_time.x);
+    // }
+    vec2 v_uv3 = mod(v_uv2 * 2.0, 1.0);
+    v_uv3 = crt(v_uv3, 2.0);
+    if (v_uv2.y < 0.5 || v_uv2.y > 1.0 || v_uv3.x < 0.0 || v_uv3.x > 1.0 || v_uv3.y < 0.0 || v_uv3.y > 1.0) {
+      discard;
+    }
+
+    
     #if ANTIALIAS_TYPE == 1
       vec2 resolution = cc_screenSize.xy;
-      vec2 fragCoord = v_uv * resolution;
+      vec2 fragCoord = v_uv3 * resolution;
       texcoords(fragCoord, resolution, v_rgbNW, v_rgbNE, v_rgbSW, v_rgbSE, v_rgbM);
       fragColor = fxaa(outputResultMap, fragCoord, resolution, v_rgbNW, v_rgbNE, v_rgbSW, v_rgbSE, v_rgbM);
     #else
-      fragColor = texture(outputResultMap, v_uv);
+      fragColor = texture(outputResultMap, v_uv3);
     #endif
-    fragColor = mix(fragColor, vec4(1.0, 0.0, 0.0, 1.0), 0.5);
-    //fragColor = vec4(1.0, 0.0, 0.0, 1.0);
   }
 }%
